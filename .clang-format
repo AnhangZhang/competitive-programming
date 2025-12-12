@@ -1,6 +1,8 @@
-BasedOnStyle: LLVM
+BasedOnStyle: Google
 IndentWidth: 2
-ColumnLimit: 160
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
-AllowShortFunctionsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+SortIncludes: false
+ColumnLimit: 80
