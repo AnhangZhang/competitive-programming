@@ -1,1 +1,0 @@
-My competitive programming solutions, references and other stuff.
