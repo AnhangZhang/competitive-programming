@@ -3,37 +3,21 @@
 // BEGIN: my_template.hpp
 #line 1 "my_template.hpp"
 #include <bits/stdc++.h>
-
 using namespace std;
 
 using ll = long long;
-using u8 = uint8_t;
-using u16 = uint16_t;
 using u32 = uint32_t;
 using u64 = uint64_t;
-using i128 = __int128;
-using u128 = unsigned __int128;
-using f128 = __float128;
+using i128 = __int128_t;
 
-template <class T>
-constexpr T infty = 0;
-template <>
-constexpr int infty<int> = 1'010'000'000;
-template <>
-constexpr ll infty<ll> = 2'020'000'000'000'000'000;
-template <>
-constexpr u32 infty<u32> = infty<int>;
-template <>
-constexpr u64 infty<u64> = infty<ll>;
-template <>
-constexpr i128 infty<i128> = i128(infty<ll>) * 2'000'000'000'000'000'000;
-template <>
-constexpr double infty<double> = numeric_limits<double>::infinity();
-template <>
-constexpr long double infty<long double> =
-    numeric_limits<long double>::infinity();
-
+// pairs
 using pi = pair<ll, ll>;
+#define eb emplace_back
+#define mp make_pair
+#define mt make_tuple
+#define f first
+#define s second
+
 using vi = vector<ll>;
 template <class T>
 using vc = vector<T>;
@@ -58,6 +42,10 @@ using pq_min = priority_queue<T, vector<T>, greater<T>>;
       a, vector<vector<vector<type>>>(       \
              b, vector<vector<type>>(c, vector<type>(__VA_ARGS__))))
 
+#define all(x) (x).begin(), (x).end()
+#define len(x) ((ll)(x).size())
+
+// loops
 // https://trap.jp/post/1224/
 #define FOR1(a) for (ll _ = 0; _ < ll(a); ++_)
 #define FOR2(i, a) for (ll i = 0; i < ll(a); ++i)
@@ -71,17 +59,23 @@ using pq_min = priority_queue<T, vector<T>, greater<T>>;
 #define FOR(...) overload4(__VA_ARGS__, FOR4, FOR3, FOR2, FOR1)(__VA_ARGS__)
 #define FOR_R(...) overload3(__VA_ARGS__, FOR3_R, FOR2_R, FOR1_R)(__VA_ARGS__)
 
-#define all(x) (x).begin(), (x).end()
-#define len(x) ll(x.size())
-#define elif else if
-
-#define eb emplace_back
-#define mp make_pair
-#define mt make_tuple
-#define fi first
-#define se second
-
-#define stoi stoll
+template <class T>
+constexpr T infty = 0;
+template <>
+constexpr int infty<int> = 1'100'000'000;
+template <>
+constexpr ll infty<ll> = 2'200'000'000'000'000'000;
+template <>
+constexpr u32 infty<u32> = infty<int>;
+template <>
+constexpr u64 infty<u64> = infty<ll>;
+template <>
+constexpr i128 infty<i128> = i128(infty<ll>) * 2'000'000'000'000'000'000;
+template <>
+constexpr double infty<double> = numeric_limits<double>::infinity();
+template <>
+constexpr long double infty<long double> =
+    numeric_limits<long double>::infinity();
 
 int popcnt(int x) { return __builtin_popcount(x); }
 int popcnt(u32 x) { return __builtin_popcount(x); }
@@ -102,100 +96,21 @@ int lowbit(u32 x) { return (x == 0 ? -1 : __builtin_ctz(x)); }
 int lowbit(ll x) { return (x == 0 ? -1 : __builtin_ctzll(x)); }
 int lowbit(u64 x) { return (x == 0 ? -1 : __builtin_ctzll(x)); }
 
-template <typename T>
+template <class T>
 T kth_bit(int k) {
   return T(1) << k;
 }
-template <typename T>
-bool has_kth_bit(T x, int k) {
-  return x >> k & 1;
+template <class T>
+bool has_bit(T x, int k) {
+  return (x >> k & 1);
 }
 
-template <typename UINT>
-struct all_bit {
-  struct iter {
-    UINT s;
-    iter(UINT s) : s(s) {}
-    int operator*() const { return lowbit(s); }
-    iter &operator++() {
-      s &= s - 1;
-      return *this;
-    }
-    bool operator!=(const iter) const { return s != 0; }
-  };
-  UINT s;
-  all_bit(UINT s) : s(s) {}
-  iter begin() const { return iter(s); }
-  iter end() const { return iter(0); }
-};
-
-template <typename UINT>
-struct all_subset {
-  static_assert(is_unsigned<UINT>::value);
-  struct iter {
-    UINT s, t;
-    bool ed;
-    iter(UINT s) : s(s), t(s), ed(0) {}
-    UINT operator*() const { return s ^ t; }
-    iter &operator++() {
-      (t == 0 ? ed = 1 : t = (t - 1) & s);
-      return *this;
-    }
-    bool operator!=(const iter) const { return !ed; }
-  };
-  UINT s;
-  all_subset(UINT s) : s(s) {}
-  iter begin() const { return iter(s); }
-  iter end() const { return iter(0); }
-};
-
-template <typename T>
-T floor(T a, T b) {
-  return a / b - (a % b && (a ^ b) < 0);
+#define MIN(x) *min_element(all(x))
+#define MAX(x) *max_element(all(x))
+template <class T, class U>
+T SUM(const U &x) {
+  return accumulate(all(x), T(0));
 }
-template <typename T>
-T ceil(T x, T y) {
-  return floor(x + y - 1, y);
-}
-template <typename T>
-T bmod(T x, T y) {
-  return x - y * floor(x, y);
-}
-template <typename T>
-pair<T, T> divmod(T x, T y) {
-  T q = floor(x, y);
-  return {q, x - q * y};
-}
-
-constexpr ll TEN[] = {
-    1LL,
-    10LL,
-    100LL,
-    1000LL,
-    10000LL,
-    100000LL,
-    1000000LL,
-    10000000LL,
-    100000000LL,
-    1000000000LL,
-    10000000000LL,
-    100000000000LL,
-    1000000000000LL,
-    10000000000000LL,
-    100000000000000LL,
-    1000000000000000LL,
-    10000000000000000LL,
-    100000000000000000LL,
-    1000000000000000000LL,
-};
-
-template <typename T, typename U>
-T SUM(const U &A) {
-  return std::accumulate(A.begin(), A.end(), T{});
-}
-
-#define MIN(v) *min_element(all(v))
-#define MAX(v) *max_element(all(v))
 template <class C, class T>
 inline long long LB(const C &c, const T &x) {
   return lower_bound(c.begin(), c.end(), x) - c.begin();
@@ -204,9 +119,14 @@ template <class C, class T>
 inline long long UB(const C &c, const T &x) {
   return upper_bound(c.begin(), c.end(), x) - c.begin();
 }
-#define UNIQUE(x) \
-  sort(all(x)), x.erase(unique(all(x)), x.end()), x.shrink_to_fit()
+#define UNIQUE(x) sort(all(x)), x.erase(unique(all(x)), x.end())
 
+template <typename T>
+T POP(queue<T> &que) {
+  T a = que.front();
+  que.pop();
+  return a;
+}
 template <typename T>
 T POP(deque<T> &que) {
   T a = que.front();
@@ -227,43 +147,49 @@ T POP(vc<T> &que) {
 }
 
 template <typename F>
-ll binary_search(F check, ll ok, ll ng, bool check_ok = true) {
-  if (check_ok) assert(check(ok));
-  while (llabs(ok - ng) > 1) {
-    auto x = (ng + ok) / 2;
-    (check(x) ? ok : ng) = x;
+ll find_first_true(F check, ll low, ll high) {
+  ++high;
+  assert(low <= high);
+  while (low < high) {
+    ll mid = low + (high - low) / 2;
+    if (check(mid)) {
+      high = mid;
+    } else {
+      low = mid + 1;
+    }
   }
-  return ok;
+  return low;
 }
 template <typename F>
-double binary_search_real(F check, double ok, double ng, int iter = 100) {
-  FOR(iter) {
-    double x = (ok + ng) / 2;
-    (check(x) ? ok : ng) = x;
+ll find_last_true(F check, ll low, ll high) {
+  --low;
+  assert(low <= high);
+  while (low < high) {
+    ll mid = low + (high - low + 1) / 2;
+    if (check(mid)) {
+      low = mid;
+    } else {
+      high = mid - 1;
+    }
   }
-  return (ok + ng) / 2;
+  return low;
+}
+template <typename F>
+double binary_search_real(F check, double low, double high, int iter = 100) {
+  FOR(iter) {
+    double mid = (low + high) / 2;
+    (check(mid) ? low : high) = mid;
+  }
+  return (low + high) / 2;
 }
 
-template <class T, class S>
-inline bool chmax(T &a, const S &b) {
-  T c = max<T>(a, b);
-  bool changed = (c != a);
-  a = c;
-  return changed;
+template <class T, class U>
+bool chmin(T &a, const U &b) {
+  return b < a ? a = b, true : false;
 }
-template <class T, class S>
-inline bool chmin(T &a, const S &b) {
-  T c = min<T>(a, b);
-  bool changed = (c != a);
-  a = c;
-  return changed;
-}
-
-// ? は -1
-vc<int> s_to_vi(const string &S, char first_char) {
-  vc<int> A(S.size());
-  FOR(i, S.size()) { A[i] = (S[i] != '?' ? S[i] - first_char : -1); }
-  return A;
+template <class T, class U>
+bool chmax(T &a, const U &b) {
+  return a < b ? a = b, true : false;
 }
 
 template <typename T, typename U>
@@ -274,25 +200,6 @@ vc<T> cumsum(const vc<U> &A, int off = 1) {
   if (off == 0) B.erase(B.begin());
   return B;
 }
-
-// stable sort
-template <typename T>
-vc<int> argsort(const vc<T> &A) {
-  vc<int> ids(len(A));
-  iota(all(ids), 0);
-  sort(all(ids),
-       [&](int i, int j) { return (A[i] == A[j] ? i < j : A[i] < A[j]); });
-  return ids;
-}
-
-// A[I[0]], A[I[1]], ...
-template <typename T>
-vc<T> rearrange(const vc<T> &A, const vc<int> &I) {
-  vc<T> B(len(I));
-  FOR(i, len(I)) B[i] = A[I[i]];
-  return B;
-}
-
 template <typename T, typename... Vectors>
 void concat(vc<T> &first, const Vectors &...others) {
   vc<T> &res = first;
@@ -301,294 +208,136 @@ void concat(vc<T> &first, const Vectors &...others) {
 #line 2 "main.cpp"
 // BEGIN: io.hpp
 #line 1 "io.hpp"
-#define FASTIO
+inline namespace IO {
+#define SFINAE(x, ...)           \
+  template <class, class = void> \
+  struct x : std::false_type {}; \
+  template <class T>             \
+  struct x<T, std::void_t<__VA_ARGS__>> : std::true_type {}
 
-// https://judge.yosupo.jp/submission/21623
-namespace fastio {
-static constexpr uint32_t SZ = 1 << 17;
-char ibuf[SZ];
-char obuf[SZ];
-char out[100];
-// pointer of ibuf, obuf
-uint32_t pil = 0, pir = 0, por = 0;
+SFINAE(DefaultI, decltype(std::cin >> std::declval<T &>()));
+SFINAE(DefaultO, decltype(std::cout << std::declval<T &>()));
+SFINAE(IsTuple, typename std::tuple_size<T>::type);
+SFINAE(Iterable, decltype(std::begin(std::declval<T>())));
 
-struct Pre {
-  char num[10000][4];
-  constexpr Pre() : num() {
-    for (int i = 0; i < 10000; i++) {
-      int n = i;
-      for (int j = 3; j >= 0; j--) {
-        num[i][j] = n % 10 | '0';
-        n /= 10;
-      }
-    }
+template <auto &is>
+struct Reader {
+  template <class T>
+  void Impl(T &t) {
+    if constexpr (DefaultI<T>::value)
+      is >> t;
+    else if constexpr (Iterable<T>::value) {
+      for (auto &x : t) Impl(x);
+    } else if constexpr (IsTuple<T>::value) {
+      std::apply([this](auto &...args) { (Impl(args), ...); }, t);
+    } else
+      static_assert(IsTuple<T>::value, "No matching type for read");
   }
-} constexpr pre;
-
-inline void load() {
-  memmove(ibuf, ibuf + pil, pir - pil);
-  pir = pir - pil + fread(ibuf + pir - pil, 1, SZ - pir + pil, stdin);
-  pil = 0;
-  if (pir < SZ) ibuf[pir++] = '\n';
-}
-
-inline void flush() {
-  fwrite(obuf, 1, por, stdout);
-  por = 0;
-}
-
-void rd(char &c) {
-  do {
-    if (pil + 1 > pir) load();
-    c = ibuf[pil++];
-  } while (isspace(c));
-}
-
-void rd(string &x) {
-  x.clear();
-  char c;
-  do {
-    if (pil + 1 > pir) load();
-    c = ibuf[pil++];
-  } while (isspace(c));
-  do {
-    x += c;
-    if (pil == pir) load();
-    c = ibuf[pil++];
-  } while (!isspace(c));
-}
-
-template <typename T>
-void rd_real(T &x) {
-  string s;
-  rd(s);
-  x = stod(s);
-}
-
-template <typename T>
-void rd_integer(T &x) {
-  if (pil + 100 > pir) load();
-  char c;
-  do c = ibuf[pil++];
-  while (c < '-');
-  bool minus = 0;
-  if constexpr (is_signed<T>::value || is_same_v<T, i128>) {
-    if (c == '-') {
-      minus = 1, c = ibuf[pil++];
-    }
+  template <class... Ts>
+  void read(Ts &...ts) {
+    ((Impl(ts)), ...);
   }
-  x = 0;
-  while ('0' <= c) {
-    x = x * 10 + (c & 15), c = ibuf[pil++];
+};
+
+template <class... Ts>
+void read(Ts &...ts) {
+  Reader<cin>{}.read(ts...);
+}
+#define def(t, args...) \
+  t args;               \
+  read(args);
+
+template <auto &os, bool debug, bool print_nd>
+struct Writer {
+  string comma() const { return debug ? "," : ""; }
+  template <class T>
+  constexpr char Space(const T &) const {
+    return print_nd && (Iterable<T>::value or IsTuple<T>::value) ? '\n' : ' ';
   }
-  if constexpr (is_signed<T>::value || is_same_v<T, i128>) {
-    if (minus) x = -x;
+  template <class T>
+  void Impl(T const &t) const {
+    if constexpr (DefaultO<T>::value)
+      os << t;
+    else if constexpr (Iterable<T>::value) {
+      if (debug) os << '{';
+      int i = 0;
+      for (auto &&x : t)
+        ((i++) ? (os << comma() << Space(x), Impl(x)) : Impl(x));
+      if (debug) os << '}';
+    } else if constexpr (IsTuple<T>::value) {
+      if (debug) os << '(';
+      std::apply(
+          [this](auto const &...args) {
+            int i = 0;
+            (((i++) ? (os << comma() << " ", Impl(args)) : Impl(args)), ...);
+          },
+          t);
+      if (debug) os << ')';
+    } else
+      static_assert(IsTuple<T>::value, "No matching type for print");
   }
-}
-
-template <class T>
-enable_if_t<is_integral_v<T> || is_same_v<T, i128> || is_same_v<T, u128>> rd(
-    T &x) {
-  rd_integer(x);
-}
-
-template <class T>
-enable_if_t<is_floating_point_v<T> || is_same_v<T, f128>> rd(T &x) {
-  rd_real(x);
-}
-
-template <class T, class U>
-void rd(pair<T, U> &p) {
-  rd(p.first), rd(p.second);
-}
-template <size_t N = 0, typename T>
-void rd_tuple(T &t) {
-  if constexpr (N < tuple_size<T>::value) {
-    auto &x = get<N>(t);
-    rd(x);
-    rd_tuple<N + 1>(t);
+  template <class T>
+  void ImplWrapper(T const &t) const {
+    if (debug) os << "\033[0;31m";
+    Impl(t);
+    if (debug) os << "\033[0m";
   }
-}
-template <class... T>
-void rd(tuple<T...> &tpl) {
-  rd_tuple(tpl);
-}
-
-template <size_t N = 0, typename T>
-void rd(array<T, N> &x) {
-  for (auto &d : x) rd(d);
-}
-template <class T>
-void rd(vc<T> &x) {
-  for (auto &d : x) rd(d);
-}
-
-void read() {}
-template <class H, class... T>
-void read(H &h, T &...t) {
-  rd(h), read(t...);
-}
-
-inline void wt_range(const char *s, size_t n) {
-  size_t i = 0;
-  while (i < n) {
-    if (por == SZ) flush();
-    size_t chunk = min(n - i, (size_t)(SZ - por));
-    memcpy(obuf + por, s + i, chunk);
-    por += chunk;
-    i += chunk;
+  template <class... Ts>
+  void print(Ts const &...ts) const {
+    ((Impl(ts)), ...);
   }
-}
-
-void wt(const char c) {
-  if (por == SZ) flush();
-  obuf[por++] = c;
-}
-void wt(const char *s) { wt_range(s, strlen(s)); }
-void wt(const string &s) { wt_range(s.data(), s.size()); }
-
-template <typename T>
-void wt_integer(T x) {
-  if (por > SZ - 100) flush();
-  if (x < 0) {
-    obuf[por++] = '-', x = -x;
+  template <class F, class... Ts>
+  void print_with_sep(const std::string &sep, F const &f,
+                      Ts const &...ts) const {
+    ImplWrapper(f), ((os << sep, ImplWrapper(ts)), ...), os << '\n';
   }
-  int outi;
-  for (outi = 96; x >= 10000; outi -= 4) {
-    memcpy(out + outi, pre.num[x % 10000], 4);
-    x /= 10000;
-  }
-  if (x >= 1000) {
-    memcpy(obuf + por, pre.num[x], 4);
-    por += 4;
-  } else if (x >= 100) {
-    memcpy(obuf + por, pre.num[x] + 1, 3);
-    por += 3;
-  } else if (x >= 10) {
-    int q = (x * 103) >> 10;
-    obuf[por] = q | '0';
-    obuf[por + 1] = (x - q * 10) | '0';
-    por += 2;
-  } else
-    obuf[por++] = x | '0';
-  memcpy(obuf + por, out + outi + 4, 96 - outi);
-  por += 96 - outi;
+  void print_with_sep(const std::string &) const { os << '\n'; }
+};
+
+template <class... Ts>
+void print(Ts const &...ts) {
+  Writer<cout, false, true>{}.print_with_sep(" ", ts...);
+}
+}  // namespace IO
+
+inline namespace Debug {
+template <typename... Args>
+void errn(Args... args) {
+  Writer<cerr, true, true>{}.print_with_sep(" | ", args...);
 }
 
-template <typename T>
-inline void wt_real(T x) {
-  static char buf[1000];
-  int n = std::snprintf(buf, sizeof(buf), "%.15f", (double)x);
-  wt_range(buf, (size_t)n);
+void err_prefix(string func, int line, string args) {
+  cerr << "\033[0;31m\u001b[1mDEBUG\033[0m"
+       << " | "
+       << "\u001b[34m" << func << "\033[0m"
+       << ":"
+       << "\u001b[34m" << line << "\033[0m"
+       << " - "
+       << "[" << args << "] = ";
 }
 
-template <class T>
-enable_if_t<is_integral_v<T> || is_same_v<T, i128> || is_same_v<T, u128>> wt(
-    T x) {
-  wt_integer(x);
-}
-
-template <class T>
-enable_if_t<is_floating_point_v<T> || is_same_v<T, f128>> wt(T x) {
-  wt_real(x);
-}
-
-inline void wt(bool b) { wt(static_cast<char>('0' + (b ? 1 : 0))); }
-
-template <class T, class U>
-void wt(const pair<T, U> &val) {
-  wt(val.first);
-  wt(' ');
-  wt(val.second);
-}
-template <size_t N = 0, typename T>
-void wt_tuple(const T &t) {
-  if constexpr (N < tuple_size<T>::value) {
-    if constexpr (N > 0) wt(' ');
-    wt(get<N>(t));
-    wt_tuple<N + 1>(t);
-  }
-}
-template <class... T>
-void wt(const tuple<T...> &tpl) {
-  wt_tuple(tpl);
-}
-template <class T, size_t S>
-void wt(const array<T, S> &val) {
-  auto n = val.size();
-  for (size_t i = 0; i < n; i++) {
-    if (i) wt(' ');
-    wt(val[i]);
-  }
-}
-template <class T>
-void wt(const vector<T> &val) {
-  auto n = val.size();
-  for (size_t i = 0; i < n; i++) {
-    if (i) wt(' ');
-    wt(val[i]);
-  }
-}
-
-void print() { wt('\n'); }
-template <class Head, class... Tail>
-void print(Head &&head, Tail &&...tail) {
-  wt(head);
-  if (sizeof...(Tail)) wt(' ');
-  print(forward<Tail>(tail)...);
-}
-
-// gcc expansion. called automaticall after main.
-void __attribute__((destructor)) _d() { flush(); }
-}  // namespace fastio
-using fastio::flush;
-using fastio::print;
-using fastio::read;
-
-#if defined(LOCAL)
-#define HDR "[DEBUG:", __func__, __LINE__, "]"
-#define SHOW(...)                                                         \
-  SHOW_IMPL(__VA_ARGS__, SHOW8, SHOW7, SHOW6, SHOW5, SHOW4, SHOW3, SHOW2, \
-            SHOW1)                                                        \
-  (__VA_ARGS__)
-#define SHOW_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, NAME, ...) NAME
-#define SHOW1(x) print(HDR, #x, "=", (x)), flush()
-#define SHOW2(x, y) print(HDR, #x, "=", (x), #y, "=", (y)), flush()
-#define SHOW3(x, y, z) \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z)), flush()
-#define SHOW4(x, y, z, w) \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w)), flush()
-#define SHOW5(x, y, z, w, v)                                                  \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-        (v)),                                                                 \
-      flush()
-#define SHOW6(x, y, z, w, v, u)                                               \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-        (v), #u, "=", (u)),                                                   \
-      flush()
-#define SHOW7(x, y, z, w, v, u, t)                                            \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-        (v), #u, "=", (u), #t, "=", (t)),                                     \
-      flush()
-#define SHOW8(x, y, z, w, v, u, t, s)                                         \
-  print(HDR, #x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-        (v), #u, "=", (u), #t, "=", (t), #s, "=", (s)),                       \
-      flush()
+#ifdef LOCAL
+#define SHOW(args...) err_prefix(__FUNCTION__, __LINE__, #args), errn(args)
 #else
-#define SHOW(...)
+#define SHOW(args...)
 #endif
+}  // namespace Debug
+
+inline namespace FileIO {
+struct AutoIO {
+  AutoIO() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout << fixed << setprecision(12);
+  }
+} auto_io;
+}  // namespace FileIO
 
 #define INT(...)   \
   int __VA_ARGS__; \
   read(__VA_ARGS__)
 #define LL(...)   \
   ll __VA_ARGS__; \
-  read(__VA_ARGS__)
-#define U32(...)   \
-  u32 __VA_ARGS__; \
-  read(__VA_ARGS__)
-#define U64(...)   \
-  u64 __VA_ARGS__; \
   read(__VA_ARGS__)
 #define STR(...)      \
   string __VA_ARGS__; \
@@ -610,14 +359,18 @@ using fastio::read;
 void YES(bool t = 1) { print(t ? "YES" : "NO"); }
 void NO(bool t = 1) { YES(!t); }
 void Yes(bool t = 1) { print(t ? "Yes" : "No"); }
-void No(bool t = 1) { Yes(!t); }
-void yes(bool t = 1) { print(t ? "yes" : "no"); }
-void no(bool t = 1) { yes(!t); }
-void YA(bool t = 1) { print(t ? "YA" : "TIDAK"); }
-void TIDAK(bool t = 1) { YA(!t); }// END: io.hpp
+void No(bool t = 1) { Yes(!t); }// END: io.hpp
 #line 3 "main.cpp"
 
 signed main() {
-  LL(N);
+  STR(S);
+  int ANS = 0;
+  ANS += count(all(S), 'i');
+  ANS += count(all(S), 'j');
+  print(ANS);
+
+  vi ans(2, 1);
+  SHOW(ans);
+  SHOW(S);
   return 0;
 }// END: main.cpp

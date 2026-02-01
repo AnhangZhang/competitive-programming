@@ -63,6 +63,7 @@ def run_tests(exe_path):
     all_passed = True
 
     for in_file in in_files:
+        print(f"{Colors.YELLOW}{'='*35}{Colors.ENDC}")
         out_file = in_file.with_suffix(".out")
         res_file = in_file.with_suffix(".res")
         
@@ -86,6 +87,7 @@ def run_tests(exe_path):
                     timeout=TIMEOUT_SEC
                 )
                 actual_text = result.stdout
+                debug_test = result.stderr
                 
                 with open(res_file, 'w', encoding='utf-8') as f_res:
                     f_res.write(actual_text)
@@ -108,7 +110,7 @@ def run_tests(exe_path):
         if norm_actual == norm_expected:
             print(f"{Colors.GREEN} {test_name}: AC ({duration:.0f}ms){Colors.ENDC}")
         else:
-            print(f"{Colors.RED} {test_name}: WA (Wrong Answer){Colors.ENDC}")
+            print(f"{Colors.RED} {test_name}: WA {Colors.ENDC}")
             print(f"{Colors.YELLOW}--- Expected ---{Colors.ENDC}")
             print(expected_text.strip())
             print(f"{Colors.YELLOW}--- Actual (Saved to {res_file.name}) ---{Colors.ENDC}") # 提示已保存
@@ -116,10 +118,14 @@ def run_tests(exe_path):
             print()
             all_passed = False
 
+        if debug_test.strip():
+            print(debug_test)
+        print()
+        print()
+
     if exe_path.exists():
         os.remove(exe_path)
 
-    print("\n" + "="*30)
     if all_passed:
         print(f"{Colors.GREEN} All tests passed!{Colors.ENDC}")
     else:
