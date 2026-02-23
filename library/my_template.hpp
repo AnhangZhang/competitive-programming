@@ -4,6 +4,7 @@ using namespace std;
 using ll = long long;
 using u32 = uint32_t;
 using u64 = uint64_t;
+using u128 = __uint128_t;
 using i128 = __int128_t;
 
 // pairs
@@ -15,6 +16,7 @@ using pi = pair<ll, ll>;
 #define s second
 
 using vi = vector<ll>;
+using vpi = vector<pi>;
 template <class T>
 using vc = vector<T>;
 template <class T>
@@ -100,6 +102,28 @@ template <class T>
 bool has_bit(T x, int k) {
   return (x >> k & 1);
 }
+
+constexpr ll TEN[] = {
+    1LL,
+    10LL,
+    100LL,
+    1000LL,
+    10000LL,
+    100000LL,
+    1000000LL,
+    10000000LL,
+    100000000LL,
+    1000000000LL,
+    10000000000LL,
+    100000000000LL,
+    1000000000000LL,
+    10000000000000LL,
+    100000000000000LL,
+    1000000000000000LL,
+    10000000000000000LL,
+    100000000000000000LL,
+    1000000000000000000LL,
+};
 
 #define MIN(x) *min_element(all(x))
 #define MAX(x) *max_element(all(x))
